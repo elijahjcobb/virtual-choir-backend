@@ -17,7 +17,7 @@ export const endpointRecording: HEndpointGroup = new HEndpointGroup();
  */
 endpointRecording.getDynamic(async(req: HRequest, res: HResponse): Promise<void> => {
 
-	const key: string = req.getEndpoint();
+	const key: string = req.getEndpoint().toUpperCase();
 	const recordingQuery: SiQuery<Recording, RecordingProps> = new SiQuery<Recording, RecordingProps>(Recording, {key});
 	const recording: Recording | undefined = await recordingQuery.getFirst();
 	if (recording === undefined) return res.err(HErrorStatusCode.NotFound, "Recording does not exist.");
