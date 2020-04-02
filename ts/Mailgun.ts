@@ -15,7 +15,7 @@ export class Mailgun {
 
 		const mailer: NodeMailgun = new NodeMailgun();
 
-		mailer.apiKey = FS.readFileSync(Path.resolve("./mailgun-key.txt")).toString("utf8");
+		mailer.apiKey = FS.readFileSync(Path.resolve("./mailgun-key.txt")).toString("utf8").replace("\n", "");
 		mailer.domain = "nmcvirtualchoir.com";
 		mailer.fromEmail = "no-reply@nmcvirtualchoir.com";
 		mailer.fromTitle = "NMC Virtual Choir";
