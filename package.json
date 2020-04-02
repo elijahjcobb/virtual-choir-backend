@@ -1,5 +1,5 @@
 {
-	"name": "@elijahjcobb/***",
+	"name": "@elijahjcobb/virtual-choir-backend",
 	"version": "0.1.0",
 	"description": "",
 	"keywords": [],
@@ -15,11 +15,12 @@
 		"compile": "npm run clean && /usr/local/bin/tsc -p tsconfig.json",
 		"watch": "tsc -w -p .",
 		"clean": "rm -rf js && rm -rf dts",
-		"start": "node js/index.js"
+		"start": "node js/index.js",
+		"server": "git pull && npm run compile && systemctl restart virtualchoir"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/elijahjcobb/***.git"
+		"url": "git+https://github.com/elijahjcobb/virtual-choir-backend.git"
 	},
 	"publishConfig": {
 		"access": "public"
@@ -27,9 +28,9 @@
 	"author": "Elijah Cobb <elijah@elijahcobb.com> (https://elijahcobb.com/)",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/elijahjcobb/***/issues"
+		"url": "https://github.com/elijahjcobb/virtual-choir-backend/issues"
 	},
-	"homepage": "https://github.com/elijahjcobb/***#readme",
+	"homepage": "https://github.com/elijahjcobb/virtual-choir-backend#readme",
 	"dependencies": {
 		"ts-mailgun": "latest",
 		"@element-ts/hydrogen": "latest",
