@@ -29,7 +29,6 @@ endpointAdmin.post("/recording", {
 		body.key = body.key.toUpperCase();
 		const password: string = FS.readFileSync(Path.resolve("./admin-password.txt")).toString("utf8");
 
-		console.log(password);
 		if (body.password !== password) return res.err(HErrorStatusCode.Forbidden, "Incorrect password.");
 		if (body.key.length < 4) return res.err(HErrorStatusCode.NotAcceptable, "Keys must be at least 4 characters long.");
 		if (!body.key.match(/^[0-9a-zA-Z]+$/)) return res.err(HErrorStatusCode.NotAcceptable, "Keys must be only letters or numbers.");
