@@ -71,13 +71,18 @@ endpointSubmission.post("/verify", {
 
 		const body: {submissionId: string, verificationCode: string} = req.getBody();
 		body.verificationCode = body.verificationCode.toUpperCase();
+		console.log(body);
 
 		const submission: Submission | undefined = await SiQuery.getObjectForId(Submission, body.submissionId);
+		console.log("got submission!");
+		console.log(submission);
 		if (!submission || submission.props.emailVerification === undefined) return res.err(404, "You must first call 'POST /submission'.");
 		if (submission.props.emailVerification.toUpperCase() !== body.verificationCode) return res.err(HErrorStatusCode.NotAcceptable, "The verification code you supplied is not valid.");
 
 		submission.props.hasVerified = true;
+		console.log("will update");
 		await submission.update("hasVerified");
+		console.log("did update");
 
 		res.setStatusCode(200);
 		res.send({"msg": "verified", submissionId: submission.getId()});
