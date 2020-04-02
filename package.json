@@ -32,16 +32,16 @@
 	},
 	"homepage": "https://github.com/elijahjcobb/virtual-choir-backend#readme",
 	"dependencies": {
-		"ts-mailgun": "latest",
-		"@element-ts/hydrogen": "latest",
+		"@element-ts/hydrogen": "^1.0.1",
 		"@element-ts/silicon": "latest",
-		"@types/mongodb": "latest"
+		"@types/mongodb": "latest",
+		"ts-mailgun": "^0.4.2"
 	},
 	"devDependencies": {
-		"@types/node": "latest",
-		"typescript": "latest",
-		"tslint": "latest",
-		"jest": "latest",
-		"@types/jest": "latest"
+		"@types/jest": "^25.1.5",
+		"@types/node": "^13.11.0",
+		"jest": "^25.2.6",
+		"tslint": "^6.1.1",
+		"typescript": "latest"
 	}
 }

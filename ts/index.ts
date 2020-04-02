@@ -17,7 +17,7 @@ import {endpointRoot} from "./endpoints/EndpointRoot";
 		verbose: true
 	});
 
-	const server: HHTTPServer = new HHTTPServer(endpointRoot);
+	const server: HHTTPServer = new HHTTPServer(endpointRoot,  {debug: true});
 	server.start(4001);
 
 })().catch((e: any): void => console.error(e));
