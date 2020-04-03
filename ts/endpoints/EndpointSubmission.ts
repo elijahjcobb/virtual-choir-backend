@@ -5,7 +5,7 @@
  * github.com/elijahjcobb
  */
 
-import {HEndpointGroup, HErrorStatusCode, HRequest, HResponse} from "@element-ts/hydrogen";
+import {HEndpointGroup, HErrorStatusCode, HRequest, HResponse, HUploadManagerLocation} from "@element-ts/hydrogen";
 import {StandardType} from "typit";
 import * as FS from "fs";
 import {Submission} from "../objects/Submission";
@@ -94,28 +94,35 @@ endpointSubmission.post("/verify", {
 /**
  * Get video submission.
  */
-endpointSubmission.post("/video", async(req: HRequest, res: HResponse): Promise<void> => {
+endpointSubmission.post("/video", {
+	upload: {
+		sizeLimit: 500_000_000,
+		location: HUploadManagerLocation.STREAM,
+		extensions: ["mp4"]
+	},
+	handler: async(req: HRequest, res: HResponse): Promise<void> => {
 
-	const submissionId: string | undefined = req.getHeaders()["submissionId"] as (string | undefined);
-	if (submissionId === undefined) return res.err(HErrorStatusCode.BadRequest, "You must supply a 'submissionId' header.");
-	const submission: Submission | undefined = await SiQuery.getObjectForId(Submission, submissionId);
-	if (submission === undefined) return res.err(404, "Submission does not exist.");
-	if (submission.props.hasVerified !== true) return res.err(401, "You must verify your email first.");
+		const submissionId: string | undefined = req.getHeaders()["submissionId"] as (string | undefined);
+		if (submissionId === undefined) return res.err(HErrorStatusCode.BadRequest, "You must supply a 'submissionId' header.");
+		const submission: Submission | undefined = await SiQuery.getObjectForId(Submission, submissionId);
+		if (submission === undefined) return res.err(404, "Submission does not exist.");
+		if (submission.props.hasVerified !== true) return res.err(401, "You must verify your email first.");
 
-	const readStream: FS.ReadStream | undefined = req.getPayloadStream();
-	if (readStream === undefined) return res.err(500, "Read stream is not defined.");
-	const writeStream: FS.WriteStream = FS.createWriteStream(submission.getVideoPath());
+		const readStream: FS.ReadStream | undefined = req.getPayloadStream();
+		if (readStream === undefined) return res.err(500, "Read stream is not defined.");
+		const writeStream: FS.WriteStream = FS.createWriteStream(submission.getVideoPath());
 
-	readStream.pipe(writeStream);
+		readStream.pipe(writeStream);
 
-	if (submission.props.recordingId === undefined) return res.err(500, "Recording id is undefined.");
-	const recording: Recording | undefined = await SiQuery.getObjectForId(Recording, submission.props.recordingId);
+		if (submission.props.recordingId === undefined) return res.err(500, "Recording id is undefined.");
+		const recording: Recording | undefined = await SiQuery.getObjectForId(Recording, submission.props.recordingId);
 
-	if (submission.props.email === undefined) return;
-	if (recording === undefined) return res.err(500, "Recording is undefined.");
-	if (recording.props.name === undefined) return;
-	await Mailgun.send(submission.props.email, "Video Submitted", `Hello ${submission.props.firstName},\n\nYour video for '${recording.props.name}' was submitted successfully.\n\nThanks,\nThe NMC Virtual Choir Team`);
+		if (submission.props.email === undefined) return;
+		if (recording === undefined) return res.err(500, "Recording is undefined.");
+		if (recording.props.name === undefined) return;
+		await Mailgun.send(submission.props.email, "Video Submitted", `Hello ${submission.props.firstName},\n\nYour video for '${recording.props.name}' was submitted successfully.\n\nThanks,\nThe NMC Virtual Choir Team`);
 
-	res.send({msg: "Uploaded."});
+		res.send({msg: "Uploaded."});
 
+	}
 });
