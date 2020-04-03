@@ -102,8 +102,8 @@ endpointSubmission.post("/video", {
 	},
 	handler: async(req: HRequest, res: HResponse): Promise<void> => {
 
-		const submissionId: string | undefined = req.getHeaders()["submissionId"] as (string | undefined);
-		if (submissionId === undefined) return res.err(HErrorStatusCode.BadRequest, "You must supply a 'submissionId' header.");
+		const submissionId: string | undefined = req.getHeaders()["submission-id"] as (string | undefined);
+		if (submissionId === undefined) return res.err(HErrorStatusCode.BadRequest, "You must supply a 'submission-id' header.");
 		const submission: Submission | undefined = await SiQuery.getObjectForId(Submission, submissionId);
 		if (submission === undefined) return res.err(404, "Submission does not exist.");
 		if (submission.props.hasVerified !== true) return res.err(401, "You must verify your email first.");
