@@ -116,4 +116,6 @@ endpointSubmission.post("/video", async(req: HRequest, res: HResponse): Promise<
 	if (recording.props.name === undefined) return;
 	await Mailgun.send(submission.props.email, "Video Submitted", `Hello ${submission.props.firstName},\n\nYour video for '${recording.props.name}' was submitted successfully.\n\nThanks,\nThe NMC Virtual Choir Team`);
 
+	res.send({msg: "Uploaded."});
+
 });
