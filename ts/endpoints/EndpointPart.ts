@@ -6,7 +6,6 @@
  */
 
 import {HEndpointGroup, HErrorStatusCode, HFileSendType, HRequest, HResponse} from "@element-ts/hydrogen";
-import {StandardType} from "typit";
 import {Part, PartProps} from "../objects/Part";
 import {SiQuery} from "@element-ts/silicon";
 import * as FS from "fs";
@@ -27,7 +26,7 @@ endpointPart.getDynamic(async(req: HRequest, res: HResponse): Promise<void> => {
 	const readStream: FS.ReadStream = FS.createReadStream(previewPath);
 
 	res.sendStream(readStream, {
-		type: HFileSendType.DOWNLOAD,
+		type: HFileSendType.PREVIEW,
 		name: partId + ".mp4",
 		mime: {
 			type: "video",
