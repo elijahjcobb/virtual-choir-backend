@@ -98,7 +98,7 @@ endpointSubmission.post("/video", {
 	upload: {
 		sizeLimit: 500_000_000,
 		location: HUploadManagerLocation.STREAM,
-		extensions: ["mp4"]
+		extensions: ["video/mp4"]
 	},
 	handler: async(req: HRequest, res: HResponse): Promise<void> => {
 
