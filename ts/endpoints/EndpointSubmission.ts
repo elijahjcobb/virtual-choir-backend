@@ -8,6 +8,7 @@
 import {HEndpointGroup, HErrorStatusCode, HRequest, HResponse, HUploadManagerLocation} from "@element-ts/hydrogen";
 import {StandardType} from "typit";
 import * as FS from "fs";
+import * as Path from "path";
 import {Submission} from "../objects/Submission";
 import * as Crypto from "crypto";
 import {Mailgun} from "../Mailgun";
@@ -49,8 +50,16 @@ endpointSubmission.post("/", {
 		submission.props.recordingId = recording.getId();
 		submission.props.hasVerified = false;
 
+		const templatePath: string = Path.resolve("./email-verification.html");
+		const templateData: Buffer = Buffer.from(templatePath);
+		let template: string = templateData.toString("utf8");
 
-		await Mailgun.send(submission.props.email, "NMC Virtual Choir Verification", `Hello ${submission.props.firstName},<br><br>Your verification code for ${recording.props.name ?? "your new recording"} is <code>${submission.props.emailVerification}</code>.<br><br>Thanks,\nThe NMC Virtual Choir Team`);
+		template = template.replace("{{name}}", submission.props.firstName ?? "null");
+		template = template.replace("{{recording}}", recording.props.name ?? "null");
+		template = template.replace("{{code}}", submission.props.emailVerification);
+
+
+		await Mailgun.send(submission.props.email, "NMC Virtual Choir Verification", template);
 		await submission.create();
 
 		res.send({submissionId: submission.getId()});
@@ -120,7 +129,16 @@ endpointSubmission.post("/video", {
 		if (submission.props.email === undefined) return;
 		if (recording === undefined) return res.err(500, "Recording is undefined.");
 		if (recording.props.name === undefined) return;
-		await Mailgun.send(submission.props.email, "Video Submitted", `Hello ${submission.props.firstName},<br><br>Your video for '${recording.props.name}' was submitted successfully.<br><br>Thanks,<br>The NMC Virtual Choir Team`);
+
+		const templatePath: string = Path.resolve("./email-submission.html");
+		const templateData: Buffer = Buffer.from(templatePath);
+		let template: string = templateData.toString("utf8");
+
+		template = template.replace("{{name}}", submission.props.firstName ?? "null");
+		template = template.replace("{{recording}}", recording.props.name ?? "null");
+		template = template.replace("{{submissionId}}", submissionId);
+
+		await Mailgun.send(submission.props.email, "Video Submitted", template);
 
 		res.send({msg: "Uploaded."});
 

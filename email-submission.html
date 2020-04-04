@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		header {
+			background: #008265;
+			color: white;
+			padding: 40px;
+		}
+
+		main {
+			padding: 40px;
+		}
+
+		p {
+			margin-bottom: 20px;
+		}
+
+		h1 {
+
+		}
+
+		@media (min-width: 720px) {
+			main {
+				padding: 40px 30vw;
+			}
+		}
+
+	</style>
+</head>
+<body>
+<header>
+	<h1>NMC Virtual Choir</h1>
+</header>
+<main>
+	<p>Hello {{name}},</p>
+	<p>We wanted to let you know we received your recording for "{{recording}}" and are currently processing it.
+	Your submission identifier is: <code>{{submissionId}}</code>.</p>
+	<p>Thank you for your contribution and we hope you have a nice day.</p>
+	<p>Thanks,<br><em>The NMC Virtual Choir Team</em></p>
+</main>
+</body>
+</html>
