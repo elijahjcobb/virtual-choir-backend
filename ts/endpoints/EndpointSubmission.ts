@@ -120,7 +120,7 @@ endpointSubmission.post("/video", {
 		if (submission.props.email === undefined) return;
 		if (recording === undefined) return res.err(500, "Recording is undefined.");
 		if (recording.props.name === undefined) return;
-		await Mailgun.send(submission.props.email, "Video Submitted", `Hello ${submission.props.firstName},\n\nYour video for '${recording.props.name}' was submitted successfully.\n\nThanks,\nThe NMC Virtual Choir Team`);
+		await Mailgun.send(submission.props.email, "Video Submitted", `Hello ${submission.props.firstName},<br><br>Your video for '${recording.props.name}' was submitted successfully.<br><br>Thanks,<br>The NMC Virtual Choir Team`);
 
 		res.send({msg: "Uploaded."});
 
