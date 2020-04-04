@@ -51,7 +51,7 @@ endpointSubmission.post("/", {
 		submission.props.hasVerified = false;
 
 		const templatePath: string = Path.resolve("./email-verification.html");
-		const templateData: Buffer = Buffer.from(templatePath);
+		const templateData: Buffer = FS.readFileSync(templatePath);
 		let template: string = templateData.toString("utf8");
 
 		template = template.replace("{{name}}", submission.props.firstName ?? "null");
@@ -131,7 +131,7 @@ endpointSubmission.post("/video", {
 		if (recording.props.name === undefined) return;
 
 		const templatePath: string = Path.resolve("./email-submission.html");
-		const templateData: Buffer = Buffer.from(templatePath);
+		const templateData: Buffer = FS.readFileSync(templatePath);
 		let template: string = templateData.toString("utf8");
 
 		template = template.replace("{{name}}", submission.props.firstName ?? "null");
